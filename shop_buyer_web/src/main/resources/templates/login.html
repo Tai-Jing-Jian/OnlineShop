@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>买家登录</title>
+</head>
+<body>
+
+<h2>欢迎登录!!!</h2>
+<form th:action="${#httpServletRequest.getScheme()+'://'+#httpServletRequest.getServerName()+':'+#httpServletRequest.getServerPort()+#httpServletRequest.getContextPath() + '/buyer/login'}" method="post">
+    账户：<input type="text" name="id" placeholder="11位数字" th:value="${buyerId}" > <span style="color: red" th:text="${idError}"></span><br>
+    密码：<input type="password" name="password" placeholder="0-20位字母或数字"> <span style="color: red" th:text="${password}"></span><br>
+    <a href="https://www.baidu.com" target="_blank">忘记密码?</a><br>
+    <input type="submit" value="登录">
+    <input type="reset" value="重置">
+</form>
+
+
+</body>
+</html>

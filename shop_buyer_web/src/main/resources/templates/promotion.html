@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>购物页面</title>
+
+  <script type="text/javascript" src="/static/js/jquery.js" th:src="@{/static/js/jquery.js}"></script>
+  <script type="text/javascript" src="/static/layer/layer.js" th:src="@{/static/layer/layer.js}"></script>
+  <link rel="stylesheet" href="/static/css/message.css" th:href="@{/static/css/message.css}"/>
+
+  <script>
+    function showMessage(message, skin){
+      layer.msg(message,{
+        time:2000,
+        skin:skin
+      });
+    }
+
+    function buy(buyerId, promotionId, goodsId){
+      $.post(
+        '/buyer/promotion',
+        {
+          buyerId: buyerId,
+          promotionId: promotionId,
+          goodsId: goodsId
+        },
+        function(result){
+          if (result.status === 1){
+            layer.msg(result.message,{
+              time:2000,
+              skin:'successMsg'
+            },function() {
+              location.href = '/buyer/toPromotion?buyerId='+buyerId;
+            });
+          }else {
+            layer.msg(result.message,{
+              time:2000,
+              skin:'errorMsg'
+            });
+          }
+        }
+      )
+    }
+  </script>
+</head>
+<body>
+  <table>
+    <caption><h2>商城高并发抢单-秒杀商品列表</h2></caption>
+    <thead>
+      <tr>
+        <th>商品名称</th>
+        <th>剩余数量</th>
+        <th>价格</th>
+        <th>开始时间</th>
+        <th>结束时间</th>
+        <th>点击抢购</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="promotionGoods:${promotionGoodsList}">
+        <td th:text="${promotionGoods.goodsName}"></td>
+        <td th:text="${promotionGoods.promotionTotal}"></td>
+        <td th:text="${promotionGoods.promotionPrice}"></td>
+        <td th:text="${#dates.format(promotionGoods.promotionStartTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+        <td th:text="${#dates.format(promotionGoods.promotionEndTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+        <td th:if="${#dates.createNow()>=promotionGoods.promotionStartTime && #dates.createNow()<=promotionGoods.promotionEndTime}">
+          <button th:if="${promotionGoods.promotionTotal>0}" th:onclick="'buy(' + ${buyerId} + ',' + ${promotionGoods.promotionId} + ',' + ${promotionGoods.goodsId} +')'" >购买</button>
+          <button th:if="${promotionGoods.promotionTotal<=0}" onclick="showMessage('该商品已经卖完，请等待下一次活动', 'errorMsg')">已卖完</button>
+        </td>
+        <td th:if="${#dates.createNow()<promotionGoods.promotionStartTime}">
+          <button onclick="showMessage('活动还未开始，请等待活动开始', 'errorMsg')">活动还未开始</button>
+        </td>
+        <td th:if="${#dates.createNow()>promotionGoods.promotionEndTime}">
+          <button onclick="showMessage('活动已经过期，请等待下一次活动', 'errorMsg')">活动已经过期</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.shop_dao.dao.BuyerShoppingCartMapper">
+  <resultMap id="BaseResultMap" type="com.example.shop_dao.entity.BuyerShoppingCartKey">
+    <constructor>
+      <idArg column="buyer_id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <idArg column="goods_id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <idArg column="number" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <idArg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+    </constructor>
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="com.example.shop_dao.entity.BuyerShoppingCartKey">
+    delete from t_buyershoppingcart
+    where buyer_id = #{buyerId,jdbcType=BIGINT}
+      and goods_id = #{goodsId,jdbcType=BIGINT}
+      and number = #{number,jdbcType=INTEGER}
+      and create_time = #{createTime,jdbcType=TIMESTAMP}
+  </delete>
+  <insert id="insert" parameterType="com.example.shop_dao.entity.BuyerShoppingCartKey">
+    insert into t_buyershoppingcart (buyer_id, goods_id, number, 
+      create_time)
+    values (#{buyerId,jdbcType=BIGINT}, #{goodsId,jdbcType=BIGINT}, #{number,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.shop_dao.entity.BuyerShoppingCartKey">
+    insert into t_buyershoppingcart
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="buyerId != null">
+        buyer_id,
+      </if>
+      <if test="goodsId != null">
+        goods_id,
+      </if>
+      <if test="number != null">
+        number,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="buyerId != null">
+        #{buyerId,jdbcType=BIGINT},
+      </if>
+      <if test="goodsId != null">
+        #{goodsId,jdbcType=BIGINT},
+      </if>
+      <if test="number != null">
+        #{number,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+</mapper>

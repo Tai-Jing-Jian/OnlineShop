@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.shop_dao.dao.PromotionOrderMapper">
+  <resultMap id="BaseResultMap" type="com.example.shop_dao.entity.PromotionOrder">
+    <constructor>
+      <idArg column="code" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="buyer_id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="promotion_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="goods_id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="status" javaType="java.lang.Byte" jdbcType="TINYINT" />
+      <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    code, buyer_id, promotion_id, goods_id, status, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_promotionorder
+    where code = #{code,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_promotionorder
+    where code = #{code,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.example.shop_dao.entity.PromotionOrder">
+    insert into t_promotionorder (code, buyer_id, promotion_id, 
+      goods_id, status, create_time
+      )
+    values (#{code,jdbcType=BIGINT}, #{buyerId,jdbcType=BIGINT}, #{promotionId,jdbcType=INTEGER}, 
+      #{goodsId,jdbcType=BIGINT}, #{status,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.shop_dao.entity.PromotionOrder">
+    insert into t_promotionorder
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="code != null">
+        code,
+      </if>
+      <if test="buyerId != null">
+        buyer_id,
+      </if>
+      <if test="promotionId != null">
+        promotion_id,
+      </if>
+      <if test="goodsId != null">
+        goods_id,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="code != null">
+        #{code,jdbcType=BIGINT},
+      </if>
+      <if test="buyerId != null">
+        #{buyerId,jdbcType=BIGINT},
+      </if>
+      <if test="promotionId != null">
+        #{promotionId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsId != null">
+        #{goodsId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.shop_dao.entity.PromotionOrder">
+    update t_promotionorder
+    <set>
+      <if test="buyerId != null">
+        buyer_id = #{buyerId,jdbcType=BIGINT},
+      </if>
+      <if test="promotionId != null">
+        promotion_id = #{promotionId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsId != null">
+        goods_id = #{goodsId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where code = #{code,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.shop_dao.entity.PromotionOrder">
+    update t_promotionorder
+    set buyer_id = #{buyerId,jdbcType=BIGINT},
+      promotion_id = #{promotionId,jdbcType=INTEGER},
+      goods_id = #{goodsId,jdbcType=BIGINT},
+      status = #{status,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where code = #{code,jdbcType=BIGINT}
+  </update>
+
+</mapper>

@@ -1,0 +1,40 @@
+spring:
+  # 配置DataSource
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/db_shop?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
+    username: root
+    password: 20000202tjj
+    initialSize: 5   #springboot中，默认并不支持这些参数
+    maxActive: 100   #springboot中，默认并不支持这些参数
+    minIdle: 3       #springboot中，默认并不支持这些参数
+    maxWait: 50000   #springboot中，默认并不支持这些参数
+  # 禁用thymeleaf的缓存
+  thymeleaf:
+    cache: false
+  # Redis配置
+  redis:
+    host: localhost
+    port: 6379
+    password:
+    jedis:
+      pool:
+        max-active: 20
+        max-idle: 10
+        min-idle: 3
+
+# 配置MyBatis
+mybatis:
+  #设置映射文件xxxMapper.xml中的可能用到的别名
+  type-aliases-package: com.example.shop_dao.entity
+  #设置映射文件xxxMapper.xml的位置
+  mapper-locations: classpath:com/example/shop_dao/mapper/*.xml
+  #开启mybatis驼峰式命名规则自动转换
+  configuration:
+    map-underscore-to-camel-case: true
+
+# 日志
+logging:
+  level:
+    # 格式：操作mysql的接口所在的位置 : debug
+    com.example.shop_dao.dao : debug
